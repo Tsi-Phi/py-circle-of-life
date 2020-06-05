@@ -42,10 +42,29 @@ class TestCondition(TestCase):
         self.fail()
 
     def test_set_consume(self):
-        self.fail()
+        self.assertEqual(self.cond.set_consume(-2, False), 2)
+        self.assertEqual(self.cond.descend, True)
+
+        self.assertEqual(self.cond.set_consume(1, False), 1)
+        self.assertEqual(self.cond.descend, False)
+
+        self.assertEqual(self.cond.set_consume(11, False), 11)
+        self.assertEqual(self.cond.descend, False)
 
     def test_get_current_display(self):
         self.fail()
 
     def test_apply_consume(self):
-        self.fail()
+        self.assertEqual(self.cond.apply_consume(), 6)
+        self.assertEqual(self.cond.set_consume(5, False), 5)
+        self.assertEqual(self.cond.descend, False)
+        self.assertEqual(self.cond.apply_consume(), 10)
+
+        self.assertEqual(self.cond.set_consume(2, True), 2)
+        self.assertEqual(self.cond.descend, True)
+        self.assertEqual(self.cond.apply_consume(), 8)
+        self.assertEqual(self.cond.apply_consume(), 6)
+
+        self.assertEqual(self.cond.set_consume(10, True), 10)
+        self.assertEqual(self.cond.descend, True)
+        self.assertEqual(self.cond.apply_consume(), 0)

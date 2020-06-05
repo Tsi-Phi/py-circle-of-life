@@ -46,13 +46,26 @@ class Condition(object):
         return self.set_current(current)
 
     def get_alert_level(self):
+        # 0 = 100-76
+        # 1 = 75-51
+        # 2 = 50-26
+        # 3 = 25-11
+        # 4 = 10-00
         return 0
 
     def set_consume(self, consume_, descend_=True):
-        return 0
+        consume = abs(consume_)
+        descend = descend_
+
+        if consume_ < 0:
+            descend = not descend
+
+        self.consume = consume
+        self.descend = descend
+        return self.consume
 
     def get_current_display(self):
         return self.current
 
     def apply_consume(self):
-        return self.current
+        return self.alt_current(self.consume, not self.descend)
